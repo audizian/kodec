@@ -153,8 +153,7 @@ class KodecProcessor(
                     "kotlin.Short" -> "Codec.SHORT"
                     "kotlin.Int" -> "Codec.INTEGER"
                     "kotlin.Long" -> "Codec.LONG"
-                    "java.util.UUID",
-                    "kotlin.uuid.Uuid" -> "Codec.UUID_STRING"
+                    "java.util.UUID" -> "Codec.UUID_STRING"
                     else -> error("No codec for type $qName")
                 }
             }
@@ -175,26 +174,6 @@ class KodecProcessor(
         }
 
         private val KSPropertyDeclaration.codecProp: CodecProp get() {
-            // Check for @Kodec override
-            val withAnnotation =
-                annotations.firstOrNull { isKodec(it.annotationType.resolve().declaration) } ?:
-                type.annotations.firstOrNull { isKodec(it.annotationType.resolve().declaration) }
-
-            withAnnotation?.let {
-                val withArg = it.arguments
-                    .firstOrNull { arg -> arg.name?.asString() == "with" }
-                    ?.value as? KSType
-                    ?: error("@Kodec.with must be a KClass<out Codec<*>>")
-
-                val codecClassDecl = withArg.declaration as? KSClassDeclaration
-                    ?: error("@Kodec.with must be a class")
-
-                val codecFqName = codecClassDecl.qualifiedName?.asString()
-                    ?: error("Codec class must have a qualified name")
-
-                return CodecProp(codecFqName + EXTENSION)
-            }
-
             val type = type.resolve()
             val decl = type.declaration
             val noAnn = !isKodec(decl)
@@ -231,7 +210,7 @@ class KodecProcessor(
                 "kotlin.Short" -> basicCodec(prop, "Codec.SHORT")
                 "kotlin.Int" -> basicCodec(prop, "Codec.INTEGER")
                 "kotlin.Long" -> basicCodec(prop, "Codec.LONG")
-                "java.util.UUID", "kotlin.uuid.Uuid" -> basicCodec(prop, "Codec.UUID_STRING")
+                "java.util.UUID" -> basicCodec(prop, "Codec.UUID_STRING")
 
                 "kotlin.DoubleArray" -> arrayCodec(prop, "Codec.DOUBLE_ARRAY")
                 "kotlin.FloatArray" -> arrayCodec(prop, "Codec.FLOAT_ARRAY")

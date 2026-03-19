@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "hytale.xalitoria"
-version = "0.1.0"
+version = "0.1.1"
 
 repositories {
     mavenCentral()
@@ -70,5 +70,16 @@ publishing {
                 from(sourceSets["main"].allSource)
             }.get()
         )
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/audizian/kodec")
+            credentials {
+                username = System.getenv("GITHUB_USER") ?: findProperty("github.user") as? String
+                password = System.getenv("GITHUB_TOKEN") ?: findProperty("github.key") as? String
+            }
+        }
     }
 }
