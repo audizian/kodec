@@ -1,7 +1,9 @@
+@file:Suppress("Unused")
+
 package xalitoria.repo
 
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
 
 fun RepositoryHandler.sonatypeRepo() =
@@ -40,3 +42,10 @@ fun RepositoryHandler.fabric() =
 
 fun RepositoryHandler.sponge() =
     maven("https://repo.spongepowered.org/maven/") { name = "Sponge" }
+
+fun RepositoryHandler.reposilite(project: Project, url: String) = maven(url) {
+    credentials {
+        username = System.getenv("MAVEN_USER") ?: project.findProperty("mvn.user") as? String
+        password = System.getenv("MAVEN_TOKEN") ?: project.findProperty("mvn.key") as? String
+    }
+}

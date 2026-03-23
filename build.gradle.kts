@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import xalitoria.repo.hytale
+import xalitoria.repo.reposilite
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -73,13 +74,6 @@ publishing {
     }
 
     repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/audizian/kodec")
-            credentials {
-                username = System.getenv("GITHUB_USER") ?: findProperty("github.user") as? String
-                password = System.getenv("GITHUB_TOKEN") ?: findProperty("github.key") as? String
-            }
-        }
+        reposilite(project, "https://maven.xali.host/releases")
     }
 }

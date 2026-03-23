@@ -16,7 +16,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven("https://maven.pkg.github.com/audizian/kodec")
+    maven("https://maven.xali.host/releases")
 }
 
 dependencies {
@@ -88,9 +88,7 @@ The processor maps Kotlin types to codecs as follows:
 
 \* - not tested
 
-## Example
-
-Using your `CustomWorldConfig` as an example:
+## Example 
 
 ```kotlin
 @Serializable
