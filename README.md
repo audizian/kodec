@@ -63,11 +63,17 @@ To keep decoding safe, provide default values for constructor parameters (or oth
 ## Key names and `@SerialName`
 
 For each included property, the keyed name comes from `@kotlinx.serialization.SerialName` when present.
-If no `@SerialName` is provided, the property name is used.
+If `@SerialName` is not provided, the property name is used.
 
 The processor normalizes the key by converting common delimiters (`-`, `_`, `.`) into a PascalCase-ish form:
 
-- `auto-respawn` -> `AutoRespawn`
+- `my-custom-key` -> `MyCustomKey`
+
+This is done to satisfy Hytale's naming schema convention. 
+However, pascal-case was decided upon before observing into the actual name requirement; the first letter must be capitalized. 
+This behavior may change in the compiler version.
+
+
 
 ## Supported property types
 
@@ -76,7 +82,7 @@ The processor maps Kotlin types to codecs as follows:
 - Primitives: `String`, `Boolean`, `Double`, `Float`, `Byte`, `Short`, `Int`, `Long`
 - UUID:
   - `java.util.UUID`
-  - `kotlin.uuid.Uuid*`
+  - `kotlin.uuid.Uuid`<sup>*</sup>
 - Arrays:
   - `DoubleArray`, `FloatArray`, `IntArray`, `LongArray`
 - Collections:
@@ -86,7 +92,7 @@ The processor maps Kotlin types to codecs as follows:
 - Custom types:
   - If the property type is another `@Kodec`-annotated class, the generated codec will recurse into it.
 
-\* - not tested
+<sup>*</sup> - not tested
 
 ## Example 
 
